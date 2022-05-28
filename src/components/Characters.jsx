@@ -1,18 +1,20 @@
 import React, {useState, useReducer, useMemo, useRef, useCallback} from "react";
 import Search from "./Search";
 import useCharacters from "../hooks/useCharacters";
+import Container from "./Container";
+import './Characters.css'
 
 const initialState = {
-    favorites:[]
+    favorites: []
 }
 
 const favoriteReducer = (state, action) => {
-    switch (action.type){
+    switch (action.type) {
         case 'ADD_TO_FAVORITE':
             return {
                 ...state,
                 favorites: [...state.favorites, action.payload]
-        };
+            };
         default:
             return state;
     }
@@ -29,48 +31,50 @@ const Characters = () => {
     const handleClick = favorite => {
         dispatch({type: 'ADD_TO_FAVORITE', payload: favorite})
     }
-/*
-    const handleSearch = event => {
-        setSearch(event.target.value);
-    }
-*/
+    /*
+        const handleSearch = event => {
+            setSearch(event.target.value);
+        }
+    */
     /*
     const handleSearch = () => {
         setSearch(searchInput.current.value);
     }
      */
-    const handleSearch = useCallback(()=>{
+    const handleSearch = useCallback(() => {
         setSearch(searchInput.current.value)
-    },[])
-/*
-    const filteredUsers = characters.filter(user=> {
-        return user.name.toLowerCase().includes(search.toLowerCase())
-    })
-*/
-    const filteredUsers = useMemo(() =>
-        characters.filter(user=> {
+    }, [])
+    /*
+        const filteredUsers = characters.filter(user=> {
             return user.name.toLowerCase().includes(search.toLowerCase())
-    }), [characters, search]
+        })
+    */
+    const filteredUsers = useMemo(() =>
+        characters.filter(user => {
+            return user.name.toLowerCase().includes(search.toLowerCase())
+        }), [characters, search]
     )
     return (
-        <div className="Characters">
+        <div>
             {
                 favorites.favorites.map(favorite => (
-                    <li key={favorite.id}>
-                        {favorite.name}
-                    </li>
+                        <li key={favorite.id}>
+                            {favorite.name}
+                        </li>
                     )
                 )
             }
 
             <Search handleSearch={handleSearch} search={search} searchInput={searchInput}/>
+            <div className="Characters">
+                {filteredUsers.map(character => (
+                    <Container character={character}>
+                        <button type={'button'} onClick={() => handleClick(character)}>Agregar a favoritos</button>
+                    </Container>
 
-            {filteredUsers.map(character => (
-                <div className={"item"} key={character.id}>
-                    <h2>{character.name}</h2>
-                    <button type={'button'} onClick={()=> handleClick(character)}>Agregar a favoritos</button>
-                </div>
-            ))}
+                ))}
+            </div>
+
         </div>
     );
 }

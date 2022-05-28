@@ -1,0 +1,13 @@
+.containerChart{
+    border-style: solid;
+    border-radius: 10px 10px 10px 10px;
+    border-color: #4b5575;
+    max-width: 300px;
+    margin: auto;
+    border-width: 5px;
+    padding-bottom: 5px;
+}
+.Search{
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
